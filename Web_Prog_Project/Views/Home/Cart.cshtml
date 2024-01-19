@@ -1,0 +1,165 @@
+﻿@using Web_Prog_Project.Models
+
+
+@{
+    int row = 0;
+    Layout = "~/Views/Shared/_Layoutuser.cshtml";
+}
+
+
+
+<!-- Start All Title Box -->
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Cart</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li class="breadcrumb-item active">Cart</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End All Title Box -->
+<!-- Start Cart  -->
+<div class="cart-box-main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="table-main table-responsive">
+                    <table class="table table-primary table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Images</th>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Session["Cart"] != null)
+                            {
+
+                                foreach (var q in (List<Product>)Session["Cart"])
+                                {
+                                    <tr>
+                                        <td class="thumbnail-img">
+                                            <a href="#">
+                                                <img class="img-fluid" src="@Url.Content(q.Product_Picture)" alt="" />
+                                            </a>
+                                        </td>
+                                        <td class="name-pr">
+                                            <a href="#">
+                                                @q.Product_Name
+                                            </a>
+                                        </td>
+                                        <td class="price-pr">
+                                            <b>Rs. @q.Product_Sale_Price</b>
+                                        </td>
+                                        <td class="quantity-box">
+                                            <a href="@Url.Action("Minus", "Home", new { RowNo = row })" class="btn btn-danger fa fa-minus"></a>
+                                            <b>@q.qty</b>
+                                            <a href="@Url.Action("Plus", "Home", new { RowNo = row })" class="btn btn-danger fa fa-plus"></a>
+                                        </td>
+                                        <td class="total-pr">
+                                            <b>Rs.@(int.Parse(q.qty.ToString()) * int.Parse(q.Product_Sale_Price.ToString()))</b>
+                                        </td>
+                                        <td class="remove-pr">
+                                            <a href="@Url.Action("trash", "Home", new { RowNo = row })">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    row++;
+                                }
+
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="6">Cart is empty</td>
+                                </tr>
+
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ... Your existing code ... -->
+
+        <div class="row my-5">
+            <div class="col-lg-6 col-sm-6">
+                <div class="coupon-box">
+                    <div class="input-group input-group-sm">
+                        <input class="form-control" placeholder="Enter your coupon code" aria-label="Coupon code" type="text" id="couponCode">
+                        <div class="input-group-append">
+                            <button class="btn btn-theme" type="button" id="applyCouponBtn">Apply Coupon</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6">
+                <div class="update-box">
+                    <input value="Update Cart" type="submit">
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-5">
+            <div class="col-lg-8 col-sm-12"></div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="order-box">
+                    <h3>Order summary</h3>
+
+                    @if (Session["Cart"] != null)
+                    {
+                        decimal subTotal = 0;
+
+                        foreach (var q in (List<Product>)Session["Cart"])
+                        {
+                            subTotal += (int.Parse(q.qty.ToString()) * int.Parse(q.Product_Sale_Price.ToString()));
+                        }
+
+                        decimal discount = 0;
+
+                        <div class="d-flex">
+                            <h4>Sub Total</h4>
+                            <div class="ml-auto font-weight-bold">Rs @subTotal</div>
+                        </div>
+
+                        <div class="d-flex">
+                            <h4>Discount</h4>
+                            <div class="ml-auto font-weight-bold">Rs @discount</div>
+                        </div>
+
+                        <!-- You can add additional calculations here (tax, shipping costs, etc.) -->
+
+                        <hr class="my-1">
+
+                        <div class="d-flex gr-total">
+                            <h5>Grand Total</h5>
+                            <div class="ml-auto h5">Rs @(subTotal - discount)</div>
+                        </div>
+
+                        <hr>
+                    }
+                    else
+                    {
+                        <p>Your cart is empty.</p>
+                    }
+                </div>
+            </div>
+
+            <div class="col-12 d-flex shopping-box">
+                <a href="checkout.html" class="ml-auto btn hvr-hover">Checkout</a>
+            </div>
+        </div>
+
+        <!-- End Cart -->

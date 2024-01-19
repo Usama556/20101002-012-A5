@@ -1,0 +1,27 @@
+﻿@model Web_Prog_Project.Models.Catagory
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layoutadmin.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Catagory</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Catagory_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Catagory_Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Catagory_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
